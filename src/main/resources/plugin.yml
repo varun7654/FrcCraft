@@ -1,0 +1,19 @@
+name: FrcCraft
+version: '${version}'
+main: com.dacubeking.frccraft.FrcCraft
+api-version: 1.18
+authors: [ DaCubeKing ]
+description: Control an FRC robot from Minecraft!
+commands:
+  setTeamNumber:
+    usage: /setTeamNumber <number>
+    description: Set the team number
+    aliases: [ setteam ]
+  startControl:
+    usage: /startControl
+    description: Start controlling the robot
+    aliases: [ start ]
+  stopControl:
+    usage: /stopControl
+    description: Stop controlling the robot
+    aliases: [ stop ]

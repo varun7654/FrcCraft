@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.dacubeking'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = 'papermc-repo'
+        url = 'https://papermc.io/repo/repository/maven-public/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+
+    maven {
+        url "https://frcmaven.wpi.edu/artifactory/release/"
+    }
+
+}
+
+dependencies {
+    compileOnly 'io.papermc.paper:paper-api:1.18.2-R0.1-SNAPSHOT'
+
+    // Add ntcore-java
+    implementation "edu.wpi.first.ntcore:ntcore-java:2021.3.1"
+
+    // Add wpiutil-java
+    implementation "edu.wpi.first.wpiutil:wpiutil-java:2021.3.1"
+
+    // Add ntcore-jni for runtime. We are adding all supported platforms
+    // so that our application will work on all supported platforms.
+    runtimeOnly "edu.wpi.first.ntcore:ntcore-jni:2021.3.1:windowsx86"
+    runtimeOnly "edu.wpi.first.ntcore:ntcore-jni:2021.3.1:windowsx86-64"
+    runtimeOnly "edu.wpi.first.ntcore:ntcore-jni:2021.3.1:linuxx86-64"
+    runtimeOnly "edu.wpi.first.ntcore:ntcore-jni:2021.3.1:linuxraspbian"
+    runtimeOnly "edu.wpi.first.ntcore:ntcore-jni:2021.3.1:osxx86-64"
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}

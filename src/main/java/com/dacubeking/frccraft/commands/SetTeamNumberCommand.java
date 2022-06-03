@@ -15,8 +15,8 @@ public class SetTeamNumberCommand implements CommandExecutor {
 
         try {
             int teamNumber = Integer.parseInt(args[0]);
-            if (teamNumber < 0 || teamNumber > 255) {
-                sender.sendMessage("Team number must be between 0 and 255");
+            if (teamNumber < 0 || teamNumber > 9999) {
+                sender.sendMessage("Team number must be between 0 and 9999");
                 return true;
             }
 

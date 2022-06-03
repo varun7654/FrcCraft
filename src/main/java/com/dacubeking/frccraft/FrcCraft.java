@@ -20,7 +20,7 @@ public final class FrcCraft extends JavaPlugin {
 
     static FileConfiguration config;
 
-    public boolean isControllingRobot = false;
+    public static boolean isControllingRobot = false;
 
     public static boolean isSneaking = false;
 
@@ -37,6 +37,7 @@ public final class FrcCraft extends JavaPlugin {
         saveConfig();
 
         NetworkTableInstance.getDefault().startClientTeam(config.getInt("teamNumber"));
+        NetworkTableInstance.getDefault().setUpdateRate(0.01);
 
         NetworkTableEntry robotPositionsEntry = NetworkTableInstance.getDefault().getEntry("autodata/robotPositions");
 
@@ -59,8 +60,8 @@ public final class FrcCraft extends JavaPlugin {
 
 
         getCommand("setTeamNumber").setExecutor(new SetTeamNumberCommand());
-        getCommand("startControl").setExecutor(new StartControlCommand(this));
-        getCommand("stopControl").setExecutor(new StopControlCommand(this));
+        getCommand("startControl").setExecutor(new StartControlCommand());
+        getCommand("stopControl").setExecutor(new StopControlCommand());
 
         Bukkit.getPluginManager().registerEvents(new FrcEventHandler(), this);
     }

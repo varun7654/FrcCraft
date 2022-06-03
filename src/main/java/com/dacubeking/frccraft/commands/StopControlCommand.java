@@ -9,18 +9,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class StopControlCommand implements CommandExecutor {
 
-    public final FrcCraft frcCraft;
-
-    public StopControlCommand(FrcCraft frcCraft) {
-        this.frcCraft = frcCraft;
-    }
-
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
                              @NotNull String[] args) {
-        if (frcCraft.isControllingRobot) {
-            frcCraft.isControllingRobot = false;
+        if (FrcCraft.isControllingRobot) {
+            FrcCraft.isControllingRobot = false;
             sender.sendMessage("Stopped controlling robot");
         } else {
             sender.sendMessage("Control of the robot is already inactive");

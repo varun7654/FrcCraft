@@ -45,7 +45,7 @@ public class FrcEventHandler implements Listener {
 
     @EventHandler
     public void onJoin(@NotNull PlayerJoinEvent playerJoinEvent) {
-        if (Bukkit.getOnlinePlayers().size() > 1) {
+        if (Bukkit.getOnlinePlayers().size() > 1 && !FrcCraft.isControllingRobot) {
             playerJoinEvent.getPlayer().kick(Component.text("Only one player is allowed to play at a time"));
         }
     }

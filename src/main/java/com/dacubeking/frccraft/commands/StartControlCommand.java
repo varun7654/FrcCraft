@@ -3,6 +3,9 @@ package com.dacubeking.frccraft.commands;
 import com.dacubeking.frccraft.FrcCraft;
 import com.dacubeking.frccraft.robotcom.RobotPosition;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -12,20 +15,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class StartControlCommand implements CommandExecutor {
 
-    public final FrcCraft frcCraft;
-
-    public StartControlCommand(FrcCraft frcCraft) {
-        this.frcCraft = frcCraft;
-    }
-
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label,
                              @NotNull String[] args) {
 
         if (sender instanceof Player player) {
-            if (!frcCraft.isControllingRobot) {
-                frcCraft.isControllingRobot = true;
+            if (!FrcCraft.isControllingRobot) {
+                FrcCraft.isControllingRobot = true;
                 sender.sendMessage("Started controlling robot");
             } else {
                 sender.sendMessage("Control of the robot is already active");
@@ -36,6 +33,12 @@ public class StartControlCommand implements CommandExecutor {
             player.teleport(
                     new Location(player.getWorld(), robotPosition.x * 3, player.getLocation().getY(), robotPosition.y * 3,
                             (float) robotPosition.theta, player.getLocation().getPitch()));
+            Bukkit.getOnlinePlayers().stream().filter(p -> p != player).forEach(p -> p.kick(Component.text(
+                    """
+                            Control of the robot is now active and only one player
+                            is allowed to be on the server while controlling the robot
+                            """
+            ).color(NamedTextColor.RED)));
         } else {
             sender.sendMessage("This command can only be used by a player");
         }
